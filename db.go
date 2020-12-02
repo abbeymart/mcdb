@@ -8,6 +8,7 @@ import (
 	"database/sql"
 	"errors"
 	"fmt"
+	_ "github.com/lib/pq"
 )
 
 type DbConnectionType *sql.DB
@@ -41,7 +42,7 @@ type DbConfig struct {
 }
 
 var (
-	db  DbConnectionType
+	db  *sql.DB
 	err error
 )
 
@@ -74,5 +75,11 @@ func (dbInfo DbConfig) OpenDb() (DbConnectionType, error) {
 		return db, nil
 	default:
 		return nil, errors.New("unknown db-type('postgres')")
+	}
+}
+
+func (dbInfo DbConfig) CloseDb() {
+	if db != nil {
+		_ = db.Close()
 	}
 }
