@@ -9,36 +9,37 @@ import (
 	"errors"
 	"fmt"
 	_ "github.com/lib/pq"
+	_ "github.com/mattn/go-sqlite3"
 )
 
 type DbConnectionType *sql.DB
 
 type DbSecureType struct {
-	secureAccess bool
-	secureCert   string
-	secureKey    string
+	SecureAccess bool
+	SecureCert   string
+	SecureKey    string
 }
 
 type DbConfigType struct {
-	host         string
-	username     string
-	password     string
-	database     string
-	filename     string
-	location     string
-	port         uint32
-	dbType       string
-	poolSize     uint
-	secureOption DbSecureType
-	uri          string
+	Host         string
+	Username     string
+	Password     string
+	DbName       string
+	Filename     string
+	Location     string
+	Port         uint32
+	DbType       string
+	PoolSize     uint
+	SecureOption DbSecureType
+	Uri          string
 }
 
 type DbConnectOptions map[string]interface{}
 
 type DbConfig struct {
-	dbType   string
-	dbConfig DbConfigType
-	options  DbConnectOptions
+	DbType string
+	DbConfigType
+	Options DbConnectOptions
 }
 
 var (
@@ -46,28 +47,29 @@ var (
 	err error
 )
 
-func (dbInfo DbConfig) OpenDb() (DbConnectionType, error) {
-	switch dbInfo.dbType {
+func (dbConfig DbConfig) OpenDb() (DbConnectionType, error) {
+	switch dbConfig.DbType {
 	case "postgres":
-		dataSourceName := fmt.Sprintf("dbname=%v sslmode=disable", dbInfo.dbConfig.database)
-		db, err = sql.Open(dbInfo.dbType, dataSourceName)
+		dataSourceName := fmt.Sprintf("port=%d host=%s user=%s password=%s dbname=%s sslmode=disable", dbConfig.Port, dbConfig.Host, dbConfig.Username, dbConfig.Password, dbConfig.DbName)
+		//dataSourceName := fmt.Sprintf("dbname=%v sslmode=disable", dbConfig.Database)
+		db, err = sql.Open(dbConfig.DbType, dataSourceName)
 		if err != nil {
 			errMsg := fmt.Sprintf("Database Connection Error: %v", err)
 			return nil, errors.New(errMsg)
 			//panic(err)
 		}
 		return db, nil
-	case "mysql":
-		dataSourceName := fmt.Sprintf("dbname=%v sslmode=disable", dbInfo.dbConfig.database)
-		db, err = sql.Open(dbInfo.dbType, dataSourceName)
+	case "mysql", "mariadb":
+		dataSourceName := fmt.Sprintf("port=%d host=%s user=%s password=%s dbname=%s sslmode=disable", dbConfig.Port, dbConfig.Host, dbConfig.Username, dbConfig.Password, dbConfig.DbName)
+		db, err = sql.Open(dbConfig.DbType, dataSourceName)
 		if err != nil {
 			errMsg := fmt.Sprintf("Database Connection Error: %v", err)
 			return nil, errors.New(errMsg)
 		}
 		return db, nil
-	case "sqlite":
-		dataSourceName := fmt.Sprintf("dbname=%v sslmode=disable", dbInfo.dbConfig.database)
-		db, err = sql.Open(dbInfo.dbType, dataSourceName)
+	case "sqlite3":
+		//dataSourceName := fmt.Sprintf("dbname=%v sslmode=disable", dbConfig.Database)
+		db, err = sql.Open(dbConfig.DbType, dbConfig.Filename)
 		if err != nil {
 			errMsg := fmt.Sprintf("Database Connection Error: %v", err)
 			return nil, errors.New(errMsg)
@@ -78,7 +80,7 @@ func (dbInfo DbConfig) OpenDb() (DbConnectionType, error) {
 	}
 }
 
-func (dbInfo DbConfig) CloseDb() {
+func (dbConfig DbConfig) CloseDb() {
 	if db != nil {
 		_ = db.Close()
 	}
