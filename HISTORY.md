@@ -1,10 +1,12 @@
 # Historical logs
 
-## Version 0.1.0
+TODO: test MongoDB connection
+
+## Version 0.1.1
 
 - Release date: Dec 06, 2020
+- Re-tested with defer CloseDb() for each test cases
 - Db Connect module: added MongoDB Connection feature
-
 
 ## Version 0.1.0
 

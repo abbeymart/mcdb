@@ -17,7 +17,7 @@ func TestSetCache(t *testing.T) {
 	}
 	myDb.Host = "localhost"
 	myDb.Username = "postgres"
-	myDb.Password = "ab12trust"
+	myDb.Password = "ab12testing"
 	myDb.Port = 5432
 	myDb.DbName = "mcdev"
 	myDb.Filename = "testdb.db"
@@ -30,15 +30,16 @@ func TestSetCache(t *testing.T) {
 	}
 	sqliteDb.Filename = "testdb.db"
 
-	var (
-		dbc, dbc2 DbConnectionType
-		err, err2 error
-	)
+	//var (
+	//	dbc, dbc2 DbConnectionType
+	//	err, err2 error
+	//)
 
 	mctest.McTest(mctest.OptionValue{
 		Name: "should successfully connect to the database",
 		TestFunc: func() {
 			dbc, err := myDb.OpenDb()
+			defer myDb.CloseDb()
 			fmt.Println(dbc)
 			mctest.AssertEquals(t, err, nil, "response-code should be: nil")
 			//mctest.AssertEquals(t, req.Message, res.Message, "response-message should be: "+res.Message)
@@ -49,18 +50,19 @@ func TestSetCache(t *testing.T) {
 		Name: "should successfully connect to SQLite3 database",
 		TestFunc: func() {
 			dbc2, err2 := sqliteDb.OpenDb()
+			defer sqliteDb.CloseDb()
 			fmt.Println(dbc2)
 			mctest.AssertEquals(t, err2, nil, "response-code should be: nil")
 			//mctest.AssertEquals(t, req.Message, res.Message, "response-message should be: "+res.Message)
 		},
 	})
 
-	if dbc != nil || err == nil {
-		myDb.CloseDb()
-	}
-	if dbc2 != nil || err2 == nil {
-		sqliteDb.CloseDb()
-	}
+	//if dbc != nil || err == nil {
+	//	myDb.CloseDb()
+	//}
+	//if dbc2 != nil || err2 == nil {
+	//	sqliteDb.CloseDb()
+	//}
 
 	mctest.PostTestResult()
 }
