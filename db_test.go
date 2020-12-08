@@ -10,30 +10,26 @@ import (
 )
 import "github.com/abbeymart/mctestgo"
 
-func TestSetCache(t *testing.T) {
+func TestDb(t *testing.T) {
 	// test-data: db-configuration settings
 	myDb := DbConfig{
-		DbType: "postgres",
+		DbType:   "postgres",
+		Host:     "localhost",
+		Username: "postgres",
+		Password: "ab12testing",
+		Port:     5432,
+		DbName:   "mcdev",
+		Filename: "testdb.db",
+		PoolSize: 20,
+		Url:      "localhost:5432",
 	}
-	myDb.Host = "localhost"
-	myDb.Username = "postgres"
-	myDb.Password = "ab12testing"
-	myDb.Port = 5432
-	myDb.DbName = "mcdev"
-	myDb.Filename = "testdb.db"
-	myDb.PoolSize = 20
-	myDb.Uri = "localhost:5432"
+
 	myDb.Options = DbConnectOptions{}
 
 	sqliteDb := DbConfig{
 		DbType: "sqlite3",
 	}
 	sqliteDb.Filename = "testdb.db"
-
-	//var (
-	//	dbc, dbc2 DbConnectionType
-	//	err, err2 error
-	//)
 
 	mctest.McTest(mctest.OptionValue{
 		Name: "should successfully connect to the database",

@@ -12,6 +12,7 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
+	"os"
 	//"go.mongodb.org/mongo-driver/mongo/readpref"
 	"time"
 )
@@ -41,8 +42,16 @@ type MongoDbConfigType struct {
 type MongoDbConnectOptions map[string]interface{}
 
 type MongoDbConfig struct {
-	DbType string
-	MongoDbConfigType
+	DbType       string
+	Host         string
+	Username     string
+	Password     string
+	DbName       string
+	Filename     string
+	Location     string
+	Port         uint32
+	PoolSize     uint
+	Url          string
 	Options MongoDbConnectOptions
 }
 
@@ -54,11 +63,17 @@ var (
 )
 
 func (dbConfig MongoDbConfig) OpenMongoDb() (MongoDbConnectionType, error) {
-	dbMg, errMg = mongo.NewClient(options.Client().ApplyURI(dbConfig.Uri))
+	// mongodb://[username:password@]host1[:port1][,...hostN[:portN]][/[defaultauthdb][?options]]
+	// mongodb://mongodb0.example.com:27017
+	//connectionString := fmt.Sprintf("port=%d host=%s user=%s password=%s dbname=%s sslmode=disable", dbConfig.Port, dbConfig.Host, dbConfig.Username, dbConfig.Password, dbConfig.DbName)
+	connectionString := dbConfig.Url
+	if os.Getenv("DATABASE_URL") != "" {
+		connectionString = os.Getenv("DATABASE_URL")
+	}
+	dbMg, errMg = mongo.NewClient(options.Client().ApplyURI(connectionString))
 	if errMg != nil {
 		errMsg := fmt.Sprintf("Database Connection Error: %v", err)
 		return nil, errors.New(errMsg)
-		//log.Fatal(err)
 	}
 	// TODO: context option, review / apply as needed
 	ctx, cancelFunc = context.WithTimeout(context.Background(), 10*time.Second)
@@ -74,7 +89,7 @@ func (dbConfig MongoDbConfig) OpenMongoDb() (MongoDbConnectionType, error) {
 }
 
 func (dbConfig MongoDbConfig) CloseMongoDb() {
-	if db != nil {
+	if dbMg != nil {
 		_ = dbMg.Disconnect(ctx)
 	}
 }
