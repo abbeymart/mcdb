@@ -1,6 +1,6 @@
 // @Author: abbeymart | Abi Akindele | @Created: 2020-12-04 | @Updated: 2020-12-04
 // @Company: mConnect.biz | @License: MIT
-// @Description: db testing
+// @Description: db-pgx testing
 
 package mcdb
 
@@ -10,7 +10,7 @@ import (
 )
 import "github.com/abbeymart/mctestgo"
 
-func TestDb(t *testing.T) {
+func TestDbPgx(t *testing.T) {
 	// test-data: db-configuration settings
 	myDb := DbConfig{
 		DbType:   "postgres",
@@ -26,40 +26,17 @@ func TestDb(t *testing.T) {
 
 	myDb.Options = DbConnectOptions{}
 
-	sqliteDb := DbConfig{
-		DbType: "sqlite3",
-	}
-	sqliteDb.Filename = "testdb.db"
-
 	mctest.McTest(mctest.OptionValue{
-		Name: "should successfully connect to the PostgresDB",
+		Name: "should successfully connect to the database - pgx",
 		TestFunc: func() {
-			dbc, err := myDb.OpenDb()
-			defer myDb.CloseDb()
+			dbc, err := myDb.OpenPgxDb()
+			defer myDb.ClosePgxDb()
 			fmt.Println(dbc)
 			fmt.Println("*****************************************")
 			mctest.AssertEquals(t, err, nil, "response-code should be: nil")
 			//mctest.AssertEquals(t, req.Message, res.Message, "response-message should be: "+res.Message)
 		},
 	})
-
-	mctest.McTest(mctest.OptionValue{
-		Name: "should successfully connect to SQLite3 database",
-		TestFunc: func() {
-			dbc2, err2 := sqliteDb.OpenDb()
-			defer sqliteDb.CloseDb()
-			fmt.Println(dbc2)
-			mctest.AssertEquals(t, err2, nil, "response-code should be: nil")
-			//mctest.AssertEquals(t, req.Message, res.Message, "response-message should be: "+res.Message)
-		},
-	})
-
-	//if dbc != nil || err == nil {
-	//	myDb.CloseDb()
-	//}
-	//if dbc2 != nil || err2 == nil {
-	//	sqliteDb.CloseDb()
-	//}
 
 	mctest.PostTestResult()
 }

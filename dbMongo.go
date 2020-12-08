@@ -62,11 +62,12 @@ var (
 	cancelFunc context.CancelFunc
 )
 
-func (dbConfig MongoDbConfig) OpenMongoDb() (MongoDbConnectionType, error) {
+func (dbConfig MongoDbConfig) OpenMongoDb() (*mongo.Client, error) {
 	// mongodb://[username:password@]host1[:port1][,...hostN[:portN]][/[defaultauthdb][?options]]
 	// mongodb://mongodb0.example.com:27017
-	//connectionString := fmt.Sprintf("port=%d host=%s user=%s password=%s dbname=%s sslmode=disable", dbConfig.Port, dbConfig.Host, dbConfig.Username, dbConfig.Password, dbConfig.DbName)
-	connectionString := dbConfig.Url
+	connectionString := fmt.Sprintf("%v://%v:%v", dbConfig.DbType, dbConfig.Host, dbConfig.Port)
+	//connectionStringSecure := fmt.Sprintf("%v://%v:%v@%v:%v/%v", dbConfig.DbType, dbConfig.Username, dbConfig.Password, dbConfig.Host, dbConfig.Port, dbConfig.DbName)
+	//connectionString := dbConfig.Url
 	if os.Getenv("DATABASE_URL") != "" {
 		connectionString = os.Getenv("DATABASE_URL")
 	}
@@ -75,7 +76,7 @@ func (dbConfig MongoDbConfig) OpenMongoDb() (MongoDbConnectionType, error) {
 		errMsg := fmt.Sprintf("Database Connection Error: %v", err)
 		return nil, errors.New(errMsg)
 	}
-	// TODO: context option, review / apply as needed
+	// context options: TODO: review / apply as needed
 	ctx, cancelFunc = context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancelFunc()
 	err = dbMg.Connect(ctx)
@@ -90,6 +91,10 @@ func (dbConfig MongoDbConfig) OpenMongoDb() (MongoDbConnectionType, error) {
 
 func (dbConfig MongoDbConfig) CloseMongoDb() {
 	if dbMg != nil {
-		_ = dbMg.Disconnect(ctx)
+		err = dbMg.Disconnect(ctx)
+		if err != nil {
+			// log error to the console
+			fmt.Println(err)
+		}
 	}
 }

@@ -57,7 +57,7 @@ var (
 	err error
 )
 
-func (dbConfig DbConfig) OpenDb() (DbConnectionType, error) {
+func (dbConfig DbConfig) OpenDb() (*sql.DB, error) {
 	switch dbConfig.DbType {
 	case "postgres":
 		connectionString := fmt.Sprintf("port=%d host=%s user=%s password=%s dbname=%s sslmode=disable", dbConfig.Port, dbConfig.Host, dbConfig.Username, dbConfig.Password, dbConfig.DbName)
@@ -98,6 +98,10 @@ func (dbConfig DbConfig) OpenDb() (DbConnectionType, error) {
 
 func (dbConfig DbConfig) CloseDb() {
 	if db != nil {
-		_ = db.Close()
+		err = db.Close()
+		if err != nil {
+			// log error to the console
+			fmt.Println(err)
+		}
 	}
 }

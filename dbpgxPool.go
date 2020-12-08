@@ -21,7 +21,7 @@ type DbPool struct {
 	dbConn  *pgxpool.Pool
 }
 
-func (dbConfig DbConfig) OpenPgxPoolDb() (*DbPool, error) {
+func (dbConfig DbConfig) OpenPgxDbPool() (*DbPool, error) {
 	switch dbConfig.DbType {
 	case "postgres":
 		connectionString := fmt.Sprintf("port=%d host=%s user=%s password=%s dbname=%s sslmode=disable", dbConfig.Port, dbConfig.Host, dbConfig.Username, dbConfig.Password, dbConfig.DbName)
@@ -47,7 +47,7 @@ func (dbConfig DbConfig) OpenPgxPoolDb() (*DbPool, error) {
 	}
 }
 
-func (dbConfig DbConfig) ClosePgxPoolDb() {
+func (dbConfig DbConfig) ClosePgxDbPool() {
 	if dbpgxP != nil {
 		dbpgxP.Close()
 	}

@@ -49,6 +49,10 @@ func (dbConfig DbConfig) OpenPgxDb() (*Db, error) {
 
 func (dbConfig DbConfig) ClosePgxDb() {
 	if dbpgx != nil {
-		_ = dbpgx.Close(context.Background())
+		err = dbpgx.Close(context.Background())
+		if err != nil {
+			// log error to the console
+			fmt.Println(err)
+		}
 	}
 }

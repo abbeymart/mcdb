@@ -1,6 +1,6 @@
 // @Author: abbeymart | Abi Akindele | @Created: 2020-12-04 | @Updated: 2020-12-04
 // @Company: mConnect.biz | @License: MIT
-// @Description: go: mConnect
+// @Description: db-mongodb testing
 
 package mcdb
 
@@ -13,7 +13,7 @@ import "github.com/abbeymart/mctestgo"
 func TestDbMongo(t *testing.T) {
 	// test-data: db-configuration settings
 	myDb := MongoDbConfig{
-		DbType:   "postgres",
+		DbType:   "mongodb",
 		Host:     "localhost",
 		Username: "abbeymart",
 		Password: "ab12testing",
@@ -21,18 +21,22 @@ func TestDbMongo(t *testing.T) {
 		DbName:   "mcdev",
 		Filename: "testdb.db",
 		PoolSize: 20,
-		Url:      "mongodb://localhost:27017/mcdev",
+		Url:      "mongodb://localhost:27017",
 	}
 	myDb.Options = MongoDbConnectOptions{}
 
 	mctest.McTest(mctest.OptionValue{
-		Name: "should successfully connect to the mongoDB:",
+		Name: "should successfully connect to the mongoDB Host/Server:",
 		TestFunc: func() {
-			dbc, err := myDb.OpenMongoDb()
+			mgServer, _ := myDb.OpenMongoDb()
+			mgServerDb := mgServer.Database(myDb.DbName)
 			defer myDb.CloseMongoDb()
-			fmt.Println(dbc)
+			fmt.Println(mgServer)
+			fmt.Println("********************************")
+			fmt.Println(mgServerDb.Name())
+			fmt.Println("*********")
 			mctest.AssertEquals(t, err, nil, "response-code should be: nil")
-			//mctest.AssertEquals(t, req.Message, res.Message, "response-message should be: "+res.Message)
+			mctest.AssertEquals(t, mgServerDb.Name(), myDb.DbName, "response-message should be: "+myDb.DbName)
 		},
 	})
 

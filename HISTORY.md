@@ -1,13 +1,11 @@
 # Historical logs
 
-TODO: test MongoDB connection
-
-## Version 0.1.2
+## Version 0.2.0
 
 - Release date: Dec 08, 2020
 - Re-aligned dbConfig type for direct access / updates
 - Implemented pgx standard and pool db-connection features
-- Tested mongoDB connection test case successfully
+- Tested pg, pgx, pgxPool and mongoDB connection test cases successfully
 
 ## Version 0.1.1
 
