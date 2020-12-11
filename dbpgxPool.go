@@ -18,7 +18,7 @@ var (
 )
 
 type DbPool struct {
-	dbConn  *pgxpool.Pool
+	DbConn *pgxpool.Pool
 }
 
 func (dbConfig DbConfig) OpenPgxDbPool() (*DbPool, error) {
@@ -29,7 +29,7 @@ func (dbConfig DbConfig) OpenPgxDbPool() (*DbPool, error) {
 			connectionString = os.Getenv("DATABASE_URL")
 		}
 		// parseConfig
-		config, err :=  pgxpool.ParseConfig(connectionString)
+		config, err := pgxpool.ParseConfig(connectionString)
 		if err != nil {
 			errMsg := fmt.Sprintf("Parsing Connection Configuration Error: %v", err)
 			return nil, errors.New(errMsg)
@@ -41,7 +41,7 @@ func (dbConfig DbConfig) OpenPgxDbPool() (*DbPool, error) {
 			return nil, errors.New(errMsg)
 			//panic(err)
 		}
-		return &DbPool{dbConn: dbpgxP}, nil
+		return &DbPool{DbConn: dbpgxP}, nil
 	default:
 		return nil, errors.New("unknown db-type('postgres')")
 	}

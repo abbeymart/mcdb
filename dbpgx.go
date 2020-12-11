@@ -18,7 +18,7 @@ var (
 )
 
 type Db struct {
-	dbConn  *pgx.Conn
+	DbConn  *pgx.Conn
 }
 
 func (dbConfig DbConfig) OpenPgxDb() (*Db, error) {
@@ -41,7 +41,7 @@ func (dbConfig DbConfig) OpenPgxDb() (*Db, error) {
 			return nil, errors.New(errMsg)
 			//panic(err)
 		}
-		return &Db{dbConn: dbpgx}, nil
+		return &Db{DbConn: dbpgx}, nil
 	default:
 		return nil, errors.New("unknown db-type('postgres')")
 	}
