@@ -1,5 +1,13 @@
 # Historical logs
 
+## Versions 0.2.3
+- Release date: Dec 14, 2020
+- Updated dependencies
+
+## Versions 0.2.2
+- Release date: Dec 13, 2020
+- Updated dependencies
+
 ## Version 0.2.1
 - Release date: Dec 11, 2020
 - Exposed Db-pgx and DbPool-pgxpool struct dbConn param as DbConn

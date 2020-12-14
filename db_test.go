@@ -8,7 +8,7 @@ import (
 	"fmt"
 	"testing"
 )
-import "github.com/abbeymart/mctestgo"
+import "github.com/abbeymart/mctest"
 
 func TestDb(t *testing.T) {
 	// test-data: db-configuration settings
