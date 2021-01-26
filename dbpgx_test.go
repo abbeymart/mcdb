@@ -22,6 +22,10 @@ func TestDbPgx(t *testing.T) {
 		Filename: "testdb.db",
 		PoolSize: 20,
 		Url:      "localhost:5432",
+		SecureOption: DbSecureType{
+			SslMode:    "",
+			SecureCert: "",
+		},
 	}
 
 	myDb.Options = DbConnectOptions{}
@@ -30,6 +34,8 @@ func TestDbPgx(t *testing.T) {
 		Name: "should successfully connect to the database - pgx",
 		TestFunc: func() {
 			dbc, err := myDb.OpenPgxDb()
+			fmt.Printf("pgx-dbc: %v\n", dbc)
+			fmt.Printf("pgx-dbc-error: %v\n", err)
 			defer myDb.ClosePgxDb()
 			fmt.Println(dbc)
 			fmt.Println("*****************************************")

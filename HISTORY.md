@@ -1,5 +1,9 @@
 # Historical logs
 
+## Versions 0.2.4
+- Release date: Jan 26, 2021
+- Parameterised sslmode and sslCert values
+
 ## Versions 0.2.3
 - Release date: Dec 14, 2020
 - Updated dependencies

@@ -18,18 +18,23 @@ var (
 )
 
 type Db struct {
-	DbConn  *pgx.Conn
+	DbConn *pgx.Conn
 }
 
 func (dbConfig DbConfig) OpenPgxDb() (*Db, error) {
+	sslMode := dbConfig.SecureOption.SslMode
+	sslCert := dbConfig.SecureOption.SecureCert
+	if sslMode == "" {
+		sslMode = "prefer"
+	}
 	switch dbConfig.DbType {
 	case "postgres":
-		connectionString := fmt.Sprintf("port=%d host=%s user=%s password=%s dbname=%s sslmode=disable", dbConfig.Port, dbConfig.Host, dbConfig.Username, dbConfig.Password, dbConfig.DbName)
+		connectionString := fmt.Sprintf("port=%d host=%s user=%s password=%s dbname=%s sslmode=%v sslrootcert=%v", dbConfig.Port, dbConfig.Host, dbConfig.Username, dbConfig.Password, dbConfig.DbName, sslMode, sslCert)
 		if os.Getenv("DATABASE_URL") != "" {
 			connectionString = os.Getenv("DATABASE_URL")
 		}
 		// parseConfig
-		config, err :=  pgx.ParseConfig(connectionString)
+		config, err := pgx.ParseConfig(connectionString)
 		if err != nil {
 			errMsg := fmt.Sprintf("Parsing Connection Configuration Error: %v", err)
 			return nil, errors.New(errMsg)

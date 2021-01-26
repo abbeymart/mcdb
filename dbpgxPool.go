@@ -22,9 +22,14 @@ type DbPool struct {
 }
 
 func (dbConfig DbConfig) OpenPgxDbPool() (*DbPool, error) {
+	sslMode := dbConfig.SecureOption.SslMode
+	sslCert := dbConfig.SecureOption.SecureCert
+	if sslMode == "" {
+		sslMode = "prefer"
+	}
 	switch dbConfig.DbType {
 	case "postgres":
-		connectionString := fmt.Sprintf("port=%d host=%s user=%s password=%s dbname=%s sslmode=disable", dbConfig.Port, dbConfig.Host, dbConfig.Username, dbConfig.Password, dbConfig.DbName)
+		connectionString := fmt.Sprintf("port=%d host=%s user=%s password=%s dbname=%s sslmode=%v sslrootcert=%v", dbConfig.Port, dbConfig.Host, dbConfig.Username, dbConfig.Password, dbConfig.DbName, sslMode, sslCert)
 		if os.Getenv("DATABASE_URL") != "" {
 			connectionString = os.Getenv("DATABASE_URL")
 		}

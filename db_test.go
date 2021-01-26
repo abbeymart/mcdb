@@ -22,6 +22,9 @@ func TestDb(t *testing.T) {
 		Filename: "testdb.db",
 		PoolSize: 20,
 		Url:      "localhost:5432",
+		SecureOption: DbSecureType{
+			SslMode: "verify-full",
+		},
 	}
 
 	myDb.Options = DbConnectOptions{}
@@ -35,6 +38,8 @@ func TestDb(t *testing.T) {
 		Name: "should successfully connect to the PostgresDB",
 		TestFunc: func() {
 			dbc, err := myDb.OpenDb()
+			//fmt.Printf("pg-dbc: %v\n", dbc)
+			//fmt.Printf("pg-dbc-error: %v\n", err)
 			defer myDb.CloseDb()
 			fmt.Println(dbc)
 			fmt.Println("*****************************************")
