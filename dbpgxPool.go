@@ -25,7 +25,7 @@ func (dbConfig DbConfig) OpenPgxDbPool() (*DbPool, error) {
 	sslMode := dbConfig.SecureOption.SslMode
 	sslCert := dbConfig.SecureOption.SecureCert
 	if sslMode == "" {
-		sslMode = "prefer"
+		sslMode = "disable"
 	}
 	switch dbConfig.DbType {
 	case "postgres":

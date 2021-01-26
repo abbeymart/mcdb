@@ -1,5 +1,9 @@
 # Historical logs
 
+## Versions 0.2.5
+- Release date: Jan 26, 2021
+- set default sslmode to disable for backward compatibility
+
 ## Versions 0.2.4
 - Release date: Jan 26, 2021
 - Parameterised sslmode and sslCert values

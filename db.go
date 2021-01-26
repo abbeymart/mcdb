@@ -62,7 +62,7 @@ func (dbConfig DbConfig) OpenDb() (*sql.DB, error) {
 	sslMode := dbConfig.SecureOption.SslMode
 	sslCert := dbConfig.SecureOption.SecureCert
 	if sslMode == "" {
-		sslMode = "prefer"
+		sslMode = "disable"
 	}
 	switch dbConfig.DbType {
 	case "postgres":
