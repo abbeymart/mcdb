@@ -1,5 +1,10 @@
 # Historical logs
 
+## Versions 0.2.6
+- Release date: Mar 04, 2021
+- added matching json-variables to types
+
+
 ## Versions 0.2.5
 - Release date: Jan 26, 2021
 - set default sslmode to disable for backward compatibility

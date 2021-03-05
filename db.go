@@ -16,41 +16,41 @@ import (
 type DbConnectionType *sql.DB
 
 type DbSecureType struct {
-	SecureAccess bool
-	SecureCert   string
-	SecureKey    string
-	SslMode      string
+	SecureAccess bool   `json:"secure_access"`
+	SecureCert   string `json:"secure_cert"`
+	SecureKey    string `json:"secure_key"`
+	SslMode      string `json:"ssl_mode"`
 }
 
 type DbConfigType struct {
-	Host         string
-	Username     string
-	Password     string
-	DbName       string
-	Filename     string
-	Location     string
-	Port         uint32
-	DbType       string
-	PoolSize     uint
-	Url          string
-	SecureOption DbSecureType
+	Host         string       `json:"host"`
+	Username     string       `json:"username"`
+	Password     string       `json:"password"`
+	DbName       string       `json:"db_name"`
+	Filename     string       `json:"filename"`
+	Location     string       `json:"location"`
+	Port         uint32       `json:"port"`
+	DbType       string       `json:"db_type"`
+	PoolSize     uint         `json:"pool_size"`
+	Url          string       `json:"url"`
+	SecureOption DbSecureType `json:"secure_option"`
 }
 
 type DbConnectOptions map[string]interface{}
 
 type DbConfig struct {
-	DbType       string
-	Host         string
-	Username     string
-	Password     string
-	DbName       string
-	Filename     string
-	Location     string
-	Port         uint32
-	PoolSize     uint
-	Url          string
-	SecureOption DbSecureType
-	Options      DbConnectOptions
+	DbType       string           `json:"db_type"`
+	Host         string           `json:"host"`
+	Username     string           `json:"username"`
+	Password     string           `json:"password"`
+	DbName       string           `json:"db_name"`
+	Filename     string           `json:"filename"`
+	Location     string           `json:"location"`
+	Port         uint32           `json:"port"`
+	PoolSize     uint             `json:"pool_size"`
+	Url          string           `json:"url"`
+	SecureOption DbSecureType     `json:"secure_option"`
+	Options      DbConnectOptions `json:"options"`
 }
 
 var (
