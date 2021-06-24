@@ -16,40 +16,40 @@ import (
 type DbConnectionType *sql.DB
 
 type DbSecureType struct {
-	SecureAccess bool   `json:"secure_access"`
-	SecureCert   string `json:"secure_cert"`
-	SecureKey    string `json:"secure_key"`
-	SslMode      string `json:"ssl_mode"`
+	SecureAccess bool   `json:"secureAccess"`
+	SecureCert   string `json:"secureCert"`
+	SecureKey    string `json:"secureKey"`
+	SslMode      string `json:"sslMode"`
 }
 
 type DbConfigType struct {
 	Host         string       `json:"host"`
 	Username     string       `json:"username"`
 	Password     string       `json:"password"`
-	DbName       string       `json:"db_name"`
+	DbName       string       `json:"dbName"`
 	Filename     string       `json:"filename"`
 	Location     string       `json:"location"`
 	Port         uint32       `json:"port"`
-	DbType       string       `json:"db_type"`
-	PoolSize     uint         `json:"pool_size"`
+	DbType       string       `json:"dbType"`
+	PoolSize     uint         `json:"poolSize"`
 	Url          string       `json:"url"`
-	SecureOption DbSecureType `json:"secure_option"`
+	SecureOption DbSecureType `json:"secureOption"`
 }
 
 type DbConnectOptions map[string]interface{}
 
 type DbConfig struct {
-	DbType       string           `json:"db_type"`
+	DbType       string           `json:"dbType"`
 	Host         string           `json:"host"`
 	Username     string           `json:"username"`
 	Password     string           `json:"password"`
-	DbName       string           `json:"db_name"`
+	DbName       string           `json:"dbName"`
 	Filename     string           `json:"filename"`
 	Location     string           `json:"location"`
 	Port         uint32           `json:"port"`
-	PoolSize     uint             `json:"pool_size"`
+	PoolSize     uint             `json:"poolSize"`
 	Url          string           `json:"url"`
-	SecureOption DbSecureType     `json:"secure_option"`
+	SecureOption DbSecureType     `json:"secureOption"`
 	Options      DbConnectOptions `json:"options"`
 }
 
