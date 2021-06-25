@@ -1,6 +1,6 @@
 // @Author: abbeymart | Abi Akindele | @Created: 2020-12-01 | @Updated: 2020-12-01
 // @Company: mConnect.biz | @License: MIT
-// @Description: mcdb - db connection for PostgresSQL, MySQL, SQLite3
+// @Description: mcdb - db connection for PostgresSQL, MySQL, SQLite3...
 
 package mcdb
 

@@ -1,5 +1,10 @@
 # Historical logs
 
+## Versions 0.3.1
+- Release date: June 25, 2021
+- re-publish refactored types
+
+
 ## Versions 0.3.0
 - Release date: June 23, 2021
 - refactored types to json-camelCase mapping
